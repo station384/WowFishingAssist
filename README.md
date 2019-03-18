@@ -23,3 +23,11 @@ I typicaly use red or blue channel to help filter.
 
 Filters are applied realtime.   motion detection settings need to be applyed.
 
+
+Note can be considured a bot because it reacts to events on the screen.  
+This doesn't not use any Wow API or is in any way tied to Wow code,  this program watches the screen, when it sees movement it click where it saw movement, and then presses a key.   Thats it.  
+This was thrown together is a few hours to see if I could do somthing better than I did years ago.  I used existing tools to accomplish this task. Some of the tools used are 
+Aforge Vision project https://github.com/andrewkirillov/AForge.NET
+SharpDX project https://github.com/sharpdx/SharpDX
+Screen capture code taken from an answer from https://stackoverflow.com/users/4342169/pomme-de-terre on question https://stackoverflow.com/questions/6812068/c-sharp-which-is-the-fastest-way-to-take-a-screen-shot  
+Thank you the answer, this was much faster way of getting the screen than using GDI+ functions.
