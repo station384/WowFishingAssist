@@ -1,4 +1,4 @@
-# WowFishingAssist
+# Wow Fishing Assistant
 Automates fishing in World of Warcraft.
 
 Options in World or warcraft.  
