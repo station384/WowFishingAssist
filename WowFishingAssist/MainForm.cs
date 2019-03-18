@@ -277,6 +277,9 @@ namespace TestScreenCapture
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Text = Text + " " + version.Major + "." + version.Minor + " (build " + version.Build + ")"; //change form title
+
             //todo: make this user selectable.
             SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS); // Set form as top form.  Always on top.  
             AForge.Vision.Motion.MotionDetector motionDetector = null;
