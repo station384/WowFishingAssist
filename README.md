@@ -16,6 +16,7 @@ Note make sure you have room in your bags.
 7. When everything looks good click start.
 
 Advanced features
+
 Some fishing areas have particals floating around, this can cause false positives
 to help mitigate this you can filter on color.
 for example if all the particals are green,  then you would want to use a color channel that does not contain green
