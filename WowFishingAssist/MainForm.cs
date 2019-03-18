@@ -123,64 +123,10 @@ namespace TestScreenCapture
             return (motionDetector);
         }
 
-
-
-
-
-
         public MainForm()
         {
             InitializeComponent();
-            AForge.Vision.Motion.MotionDetector motionDetector = null;
-            motionDetector = GetDefaultMotionDetector();
-            globalTimer.Tick += GlobalTimer_Tick;
 
-            screenStateLogger.ScreenRefreshed += (sender1, data) =>
-            {
-                //New frame in data
-                System.Drawing.Image i = System.Drawing.Image.FromStream(new MemoryStream(data));
-                origScreenHeight = i.Height;
-                origScreenWidth = i.Width;
-                // todo:  The percentage of scan area should be able to be set on the form
-                // To help in scan speed and to eliminate some of the external noise, only scan the center of the screen.
-                
-                int left = (int)(i.Width * 0.40);
-                int right = (int)(i.Width * 0.60) - left;
-                int top = (int)(i.Height * 0.40);
-                int bottom = (int)(i.Height * 0.60) - top;
-                Rectangle srcRect = new Rectangle(left, top, right, bottom);
-                Bitmap cropped = ((Bitmap)i).Clone(srcRect, i.PixelFormat);
-
-
-                // depending on the area of the game it is sometimes best to remove some colors.
-                
-                if (rbGreyScaleFilter.Checked)
-                    cropped = Grayscale.CommonAlgorithms.BT709.Apply(cropped);
-
-
-                if (rbRedFilter.Checked)
-                {
-                    ExtractChannel extractFilter = new ExtractChannel(RGB.R);
-                    cropped = extractFilter.Apply(cropped);
-                }
-
-                if (rbBlueFilter.Checked)
-                {
-                    ExtractChannel extractFilter = new ExtractChannel(RGB.B);
-                    cropped = extractFilter.Apply(cropped);
-                }
-
-                if (rbGreenFilter.Checked)
-                {
-                    ExtractChannel extractFilter = new ExtractChannel(RGB.G);
-                    cropped = extractFilter.Apply(cropped);
-                }
-
-
-                detectMovement((Bitmap)cropped);
-                pbViewPane.Image = (Bitmap)cropped;
-            };
-            screenStateLogger.Start();
         }
 
         private async void sendFishingCastCommand ()
@@ -193,7 +139,6 @@ namespace TestScreenCapture
             PostMessage(hWnd, WM_KEYUP, 0xBB, 0);
 
         }
-
 
         private async void GlobalTimer_Tick(object sender, EventArgs e)
         {
@@ -213,8 +158,6 @@ namespace TestScreenCapture
             globalTimer.Enabled = true;
         }
 
-
-
         public async void DoMouseClick()
         {
             //Call the imported function with the cursor's current position
@@ -225,8 +168,6 @@ namespace TestScreenCapture
             mouse_event( MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
             await Task.Delay(100);
         }
-
-
 
         private async void detectMovement (Bitmap b)
         {
@@ -284,12 +225,6 @@ namespace TestScreenCapture
 
         }
 
-
-
-
-
-
-
         private void buStartStop_Click(object sender, EventArgs e)
         {
             if (running)
@@ -344,6 +279,56 @@ namespace TestScreenCapture
         {
             //todo: make this user selectable.
             SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS); // Set form as top form.  Always on top.  
+            AForge.Vision.Motion.MotionDetector motionDetector = null;
+            motionDetector = GetDefaultMotionDetector();
+            globalTimer.Tick += GlobalTimer_Tick;
+
+            screenStateLogger.ScreenRefreshed += (sender1, data) =>
+            {
+                //New frame in data
+                System.Drawing.Image i = System.Drawing.Image.FromStream(new MemoryStream(data));
+                origScreenHeight = i.Height;
+                origScreenWidth = i.Width;
+                // todo:  The percentage of scan area should be able to be set on the form
+                // To help in scan speed and to eliminate some of the external noise, only scan the center of the screen.
+
+                int left = (int)(i.Width * 0.40);
+                int right = (int)(i.Width * 0.60) - left;
+                int top = (int)(i.Height * 0.40);
+                int bottom = (int)(i.Height * 0.60) - top;
+                Rectangle srcRect = new Rectangle(left, top, right, bottom);
+                Bitmap cropped = ((Bitmap)i).Clone(srcRect, i.PixelFormat);
+
+
+                // depending on the area of the game it is sometimes best to remove some colors.
+
+                if (rbGreyScaleFilter.Checked)
+                    cropped = Grayscale.CommonAlgorithms.BT709.Apply(cropped);
+
+
+                if (rbRedFilter.Checked)
+                {
+                    ExtractChannel extractFilter = new ExtractChannel(RGB.R);
+                    cropped = extractFilter.Apply(cropped);
+                }
+
+                if (rbBlueFilter.Checked)
+                {
+                    ExtractChannel extractFilter = new ExtractChannel(RGB.B);
+                    cropped = extractFilter.Apply(cropped);
+                }
+
+                if (rbGreenFilter.Checked)
+                {
+                    ExtractChannel extractFilter = new ExtractChannel(RGB.G);
+                    cropped = extractFilter.Apply(cropped);
+                }
+
+
+                detectMovement((Bitmap)cropped);
+                pbViewPane.Image = (Bitmap)cropped;
+            };
+            screenStateLogger.Start();
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestScreenCapture
@@ -20,6 +21,7 @@ namespace TestScreenCapture
     {
         private byte[] _previousScreen;
         private bool _run, _init;
+        private int captureRateMs = 16;
 
         public int Size { get; private set; }
         public ScreenStateLogger()
@@ -59,10 +61,13 @@ namespace TestScreenCapture
             };
             var screenTexture = new Texture2D(device, textureDesc);
 
-            Task.Factory.StartNew(() =>
+
+            ThreadStart screenGrabCycle =
+
+            async () =>
             {
                 // Duplicate the output
- 
+
                 using (var duplicatedOutput = output1.DuplicateOutput(device))
                 {
                     while (_run)
@@ -114,6 +119,8 @@ namespace TestScreenCapture
                             }
                             screenResource.Dispose();
                             duplicatedOutput.ReleaseFrame();
+                            
+                            await Task.Delay(captureRateMs);
                         }
                         catch (SharpDXException e)
                         {
@@ -125,8 +132,12 @@ namespace TestScreenCapture
                         }
                     }
                 }
-            });
-            while (!_init) ;
+            };
+            Thread thread = new Thread(screenGrabCycle) { IsBackground = true };
+            thread.Start();
+
+         //   Task.Factory.StartNew();
+           // while (!_init) ;
         }
 
         public void Stop()
