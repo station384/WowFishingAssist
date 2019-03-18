@@ -2,12 +2,14 @@
 Automates fishing in World of Warcraft.
 
 ### Options in World or warcraft.
-Casting need to be tied to the = button on the cast bar.
+Casting needs to be tied to the = button on the cast bar.
 
 Auto loot needs to be turned on.
 
 ### Useage
 Note make sure you have room in your bags.
+
+You may have to seed slots with fish you want, otherwise junk items will eventually take up the spots.
 
 1. Find a place to fish.
 2. Load the Wow Fishing Assistant
