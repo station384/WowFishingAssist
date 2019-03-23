@@ -47,11 +47,18 @@
             this.rbNoFiltering = new System.Windows.Forms.RadioButton();
             this.lblWhoWroteIt = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.cbSellJunk = new System.Windows.Forms.CheckBox();
+            this.numMinBobClickTime = new System.Windows.Forms.NumericUpDown();
+            this.numMaxBobClickTime = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMsPerBackgroupUpdate)).BeginInit();
             this.gbColorFilters.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMinBobClickTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).BeginInit();
             this.SuspendLayout();
             // 
             // pbViewPane
@@ -254,11 +261,76 @@
             this.label5.TabIndex = 17;
             this.label5.Text = "Wow Fishing Assist";
             // 
+            // cbSellJunk
+            // 
+            this.cbSellJunk.AutoSize = true;
+            this.cbSellJunk.Location = new System.Drawing.Point(311, 392);
+            this.cbSellJunk.Name = "cbSellJunk";
+            this.cbSellJunk.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbSellJunk.Size = new System.Drawing.Size(66, 17);
+            this.cbSellJunk.TabIndex = 18;
+            this.cbSellJunk.Text = "Sell junk";
+            this.cbSellJunk.UseVisualStyleBackColor = true;
+            // 
+            // numMinBobClickTime
+            // 
+            this.numMinBobClickTime.Location = new System.Drawing.Point(185, 346);
+            this.numMinBobClickTime.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numMinBobClickTime.Name = "numMinBobClickTime";
+            this.numMinBobClickTime.Size = new System.Drawing.Size(120, 20);
+            this.numMinBobClickTime.TabIndex = 19;
+            this.numMinBobClickTime.ValueChanged += new System.EventHandler(this.numMinBobClickTime_ValueChanged);
+            // 
+            // numMaxBobClickTime
+            // 
+            this.numMaxBobClickTime.Location = new System.Drawing.Point(185, 372);
+            this.numMaxBobClickTime.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numMaxBobClickTime.Name = "numMaxBobClickTime";
+            this.numMaxBobClickTime.Size = new System.Drawing.Size(120, 20);
+            this.numMaxBobClickTime.TabIndex = 20;
+            this.numMaxBobClickTime.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numMaxBobClickTime.ValueChanged += new System.EventHandler(this.numMaxBobClickTime_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(32, 348);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(137, 13);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "Minimum Bobber Click Time";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(29, 374);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(140, 13);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "Maximum Bobber Click Time";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 451);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.numMaxBobClickTime);
+            this.Controls.Add(this.numMinBobClickTime);
+            this.Controls.Add(this.cbSellJunk);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblWhoWroteIt);
             this.Controls.Add(this.gbColorFilters);
@@ -285,6 +357,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMsPerBackgroupUpdate)).EndInit();
             this.gbColorFilters.ResumeLayout(false);
             this.gbColorFilters.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMinBobClickTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,6 +385,11 @@
         private System.Windows.Forms.RadioButton rbGreyScaleFilter;
         private System.Windows.Forms.Label lblWhoWroteIt;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox cbSellJunk;
+        private System.Windows.Forms.NumericUpDown numMinBobClickTime;
+        private System.Windows.Forms.NumericUpDown numMaxBobClickTime;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }
 

@@ -30,7 +30,8 @@ namespace TestScreenCapture
 
         const UInt32 WM_KEYDOWN = 0x0100;
         const UInt32 WM_KEYUP = 0x0101;
-
+        const UInt32 WM_CHAR = 0x0102;
+        private Random rnd = new Random();
         [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
         private static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
@@ -71,6 +72,22 @@ namespace TestScreenCapture
         bool running = false;
         int origScreenHeight = 0;
         int origScreenWidth = 0;
+        int CastCount = 0;
+
+        private  void PauseFishing()
+        {
+            warmupStartTime = DateTime.Now.Ticks + (10000 * 100000);  // delay 10 seconds before we start scanning anything.  this way the background of the image can be learned.
+            globalTimer.Enabled = false;
+            inWarmupMode = true;
+            running = false;
+        }
+        private void ResumeFishing()
+        {
+            running = true;
+            inWarmupMode = true;
+            warmupStartTime = DateTime.Now.Ticks;
+            globalTimer.Enabled = true;
+        }
 
         public static AForge.Vision.Motion.MotionDetector GetDefaultMotionDetector()
         {
@@ -126,19 +143,109 @@ namespace TestScreenCapture
         public MainForm()
         {
             InitializeComponent();
-
         }
 
-        private async void sendFishingCastCommand ()
+        private async void sendAKey (int key)
+        {
+            await Task.Delay(50);
+            PostMessage(hWnd, WM_KEYDOWN, key, 0);
+            //await Task.Delay(50);
+            PostMessage(hWnd, WM_KEYUP, key, 0);
+            await Task.Delay(50);
+        }
+
+        private async void sendAChar(int key)
+        {
+   
+            PostMessage(hWnd, WM_CHAR, key, 0x0280001);
+           
+        }
+
+        private  void sendFishingCastCommand ()
         {
             Point pt = new Point(10, 10);
             Cursor.Position = pt;
-            PostMessage(hWnd, WM_KEYDOWN, 0xBB, 0);
-            //Thread.Sleep(100);
-            await Task.Delay(100);
-            PostMessage(hWnd, WM_KEYUP, 0xBB, 0);
-
+            sendAKey(0xBB);
+            CastCount++;
         }
+
+        private async Task sendSellSequence ()
+        {
+            PauseFishing();
+            SetForegroundWindow(hWnd);    // bring Wow into the forground.
+            await Task.Delay(1000);
+            sendAKey(0x23);  // - End
+            await Task.Delay(1000);
+            sendAKey(0x23);  // - End
+            await Task.Delay(1000);
+            sendAKey(0x23);  // - End
+            await Task.Delay(1000);
+            sendAKey(0x23);  // - End
+            await Task.Delay(100);
+            sendAKey(0xBF);  // - / 
+            await Task.Delay(100);
+            sendAChar(0x43);  // - C
+       
+            sendAChar(0x41);  // - A   
+      
+            sendAChar(0x53);  // - S 
+         
+            sendAChar(0x54);  // - T
+       
+            sendAChar(0x20);  // - 
+       
+            sendAChar(0x54);  // -T  
+         
+            sendAChar(0x52);  // -r 
+           
+            sendAChar(0x41);  // -a
+          
+            sendAChar(0x56);  // -v
+          
+            sendAChar(0x45);// -e
+        
+            sendAChar(0x4C);// -l
+         
+            sendAChar(0x45);// -e
+            sendAChar(0x52);  // -r
+            sendAChar(0x27);// -'
+            sendAChar(0x53);// -s
+            sendAChar(0x20);  // -
+            sendAChar(0x54); // -T
+            sendAChar(0x55);// -u
+            sendAChar(0x4E);// -n
+            sendAChar(0x44);// -d
+            sendAChar(0x52);  // -r
+            sendAChar(0x41); // -a
+            sendAChar(0x20);  // -
+            sendAChar(0x4D);// -M
+            sendAChar(0x41);  // -a
+            sendAChar(0x4D);// -m
+            sendAChar(0x4D);// -m
+            sendAChar(0x4F);// -o
+            sendAChar(0x54);  // -t
+            sendAChar(0x48);// -h
+            sendAKey(0x0D);//Enter
+            await Task.Delay(5000);
+
+            Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+            Cursor.Position = pt;
+            DoMouseClick();
+            await Task.Delay(5000);
+            //zoom back in
+            await Task.Delay(1000);
+            sendAKey(0x24);  // - End
+            await Task.Delay(1000);
+            sendAKey(0x24);  // - End
+            await Task.Delay(1000);
+            sendAKey(0x24);  // - End
+            await Task.Delay(1000);
+            sendAKey(0x24);  // - End
+            sendFishingCastCommand();
+            ResumeFishing();
+            
+        }
+
 
         private async void GlobalTimer_Tick(object sender, EventArgs e)
         {
@@ -147,15 +254,18 @@ namespace TestScreenCapture
             // If no motion as been detected this will fire, if motion has been detected then the timer for this event is reset.
             globalTimer.Enabled = false;
             if (!running) return;
-            motionDetector.Reset();   
+            PauseFishing();
+            motionDetector.Reset();
 
             // Use this instead of thread.sleep to avoid pausing of the program. 
-            await Task.Delay(5000);   // This delay is to allow the motion detection to settle down and relearn the new background without the bobber being there.
+            //  await Task.Delay(5000);   // This delay is to allow the motion detection to settle down and relearn the new background without the bobber being there.
+
             sendFishingCastCommand();  //  Inject a keyDown and keyUp event into windows for the '=' key.  Todo: The key should be configurable.
 
-            inWarmupMode = true;
-            warmupStartTime = DateTime.Now.Ticks;
-            globalTimer.Enabled = true;
+            //inWarmupMode = true;
+            //warmupStartTime = DateTime.Now.Ticks;
+            //globalTimer.Enabled = true;
+            ResumeFishing();
         }
 
         public async void DoMouseClick()
@@ -167,6 +277,41 @@ namespace TestScreenCapture
             await Task.Delay(100);
             mouse_event( MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
             await Task.Delay(100);
+        }
+
+
+
+        private async void ClickBobber(Rectangle x1)
+        {
+            Point pt;
+            PauseFishing();
+            //Get the biggest bounding box.
+  
+
+            // set it to move the mouse to the center of bounding box. 
+            int clickxPos = ((int)(origScreenWidth * 0.40) + x1.Right) - (x1.Width / 2);
+            int clickyPos = ((int)(origScreenHeight * 0.50) + x1.Bottom) - (x1.Height / 2);
+            pt = new Point(clickxPos, clickyPos);
+            Cursor.Position = pt;
+            await Task.Delay(rnd.Next((int)numMinBobClickTime.Value*1000,(int)numMaxBobClickTime.Value*1000));
+            DoMouseClick();  // Inject windows events for mousedown and mouseup to simulate a click on the screen where motion was detected.
+
+            await Task.Delay(2000);  // Wait for the dialogs on the screen to go away and settle down.
+
+            //Move the cursor to the upper left corner for resting.  this avoids it accedently highliting the bobber can causing a false positive.
+            pt = new Point(10, 10);
+            Cursor.Position = pt;
+    
+            CastCount++;
+            if (CastCount > 50 && cbSellJunk.Checked)
+            {
+                await sendSellSequence();
+                CastCount = 0;
+                return;
+            }
+
+            sendFishingCastCommand();
+            ResumeFishing();
         }
 
         private async void detectMovement (Bitmap b)
@@ -181,70 +326,34 @@ namespace TestScreenCapture
                 return;
             }
            
-         
         
             Rectangle[] i = ((AForge.Vision.Motion.BlobCountingObjectsProcessing)motionDetector.MotionProcessingAlgorithm).ObjectRectangles;
-            Point pt;
+           
             if (i.Count() > 0)
             {
-                globalTimer.Enabled = false;
-                warmupStartTime = DateTime.Now.Ticks + (10000 * 1000);
-                inWarmupMode = true;
-                //Get the biggest bounding box.
-                var x1 = i.OrderByDescending(item => item.Height * item.Width).FirstOrDefault();
-       
-                // set it to move the mouse to the lower right of bounding box.  this is usualy a safe place  to click.
-                var b1 = x1.Width;
-                int xPos = (int)(origScreenWidth * 0.40) + x1.Right;
-                int yPos = (int)(origScreenHeight * 0.40) + x1.Bottom;
-                pt = new Point(xPos, yPos);
-                Cursor.Position = pt;
-                DoMouseClick();  // Inject windows events for mousedown and mouseup to simulate a click on the screen where motion was detected.
-
-
-            
-          
-       
-               
-            
-                await Task.Delay(5000);  // Wait for the dialogs on the screen to go away and settle down.
-
-                //Move the cursor to the upper left corner for resting.  this avoids it accedently highliting the bobber can causing a false positive.
-                pt = new Point(10, 10);
-                Cursor.Position = pt;
-                sendFishingCastCommand(); // recast the fishing pole.
-
-
-                warmupStartTime = DateTime.Now.Ticks;
-                globalTimer.Enabled = true;
+                Rectangle x1 = i.OrderByDescending(item => item.Height * item.Width).FirstOrDefault();
+                ClickBobber(x1);
             }
-
-            
-
-
-
+  
+    
         }
 
         private void buStartStop_Click(object sender, EventArgs e)
         {
+            Process[] p = Process.GetProcessesByName("Wow");
+            hWnd = p[0].MainWindowHandle;
+            //  sendSellSequence();
             if (running)
             {
-                globalTimer.Enabled = false;
-                inWarmupMode = true;
-                warmupStartTime = DateTime.Now.Ticks + (10000 * 100000);  // delay 10 seconds before we start scanning anything.  this way the background of the image can be learned.
                 buStartStop.Text = "Start";
-                running = false;
+                PauseFishing();
             }
             else
             {
-                Process[] p = Process.GetProcessesByName("Wow");
-                hWnd = p[0].MainWindowHandle;
-                running = true;
-                inWarmupMode = true;
-                warmupStartTime = DateTime.Now.Ticks;
-                SetForegroundWindow(hWnd);    // bring Wow into the forground.
-                globalTimer.Enabled = true;
+
                 buStartStop.Text = "Stop";
+                SetForegroundWindow(hWnd);    // bring Wow into the forground.
+                ResumeFishing();
             }
         }
 
@@ -297,8 +406,8 @@ namespace TestScreenCapture
 
                 int left = (int)(i.Width * 0.40);
                 int right = (int)(i.Width * 0.60) - left;
-                int top = (int)(i.Height * 0.40);
-                int bottom = (int)(i.Height * 0.60) - top;
+                int top = (int)(i.Height * 0.50);
+                int bottom = (int)(i.Height * 0.70) - top;
                 Rectangle srcRect = new Rectangle(left, top, right, bottom);
                 Bitmap cropped = ((Bitmap)i).Clone(srcRect, i.PixelFormat);
 
@@ -332,6 +441,16 @@ namespace TestScreenCapture
                 pbViewPane.Image = (Bitmap)cropped;
             };
             screenStateLogger.Start();
+        }
+
+        private void numMinBobClickTime_ValueChanged(object sender, EventArgs e)
+        {
+            numMaxBobClickTime.Minimum = this.numMinBobClickTime.Value;
+        }
+
+        private void numMaxBobClickTime_ValueChanged(object sender, EventArgs e)
+        {
+            numMinBobClickTime.Maximum = numMaxBobClickTime.Value;
         }
     }
 }
