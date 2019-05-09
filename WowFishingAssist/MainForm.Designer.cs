@@ -52,6 +52,11 @@
             this.numMaxBobClickTime = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.cbHerringLure = new System.Windows.Forms.CheckBox();
+            this.lblCastCount = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblLureTime = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
@@ -72,7 +77,7 @@
             // 
             // buStartStop
             // 
-            this.buStartStop.Location = new System.Drawing.Point(356, 415);
+            this.buStartStop.Location = new System.Drawing.Point(356, 475);
             this.buStartStop.Name = "buStartStop";
             this.buStartStop.Size = new System.Drawing.Size(75, 23);
             this.buStartStop.TabIndex = 1;
@@ -165,7 +170,7 @@
             // 
             // buApplySettings
             // 
-            this.buApplySettings.Location = new System.Drawing.Point(191, 415);
+            this.buApplySettings.Location = new System.Drawing.Point(191, 475);
             this.buApplySettings.Name = "buApplySettings";
             this.buApplySettings.Size = new System.Drawing.Size(75, 23);
             this.buApplySettings.TabIndex = 10;
@@ -246,7 +251,7 @@
             // lblWhoWroteIt
             // 
             this.lblWhoWroteIt.AutoSize = true;
-            this.lblWhoWroteIt.Location = new System.Drawing.Point(9, 426);
+            this.lblWhoWroteIt.Location = new System.Drawing.Point(9, 486);
             this.lblWhoWroteIt.Name = "lblWhoWroteIt";
             this.lblWhoWroteIt.Size = new System.Drawing.Size(93, 13);
             this.lblWhoWroteIt.TabIndex = 16;
@@ -255,7 +260,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 408);
+            this.label5.Location = new System.Drawing.Point(9, 468);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(98, 13);
             this.label5.TabIndex = 17;
@@ -264,7 +269,7 @@
             // cbSellJunk
             // 
             this.cbSellJunk.AutoSize = true;
-            this.cbSellJunk.Location = new System.Drawing.Point(311, 392);
+            this.cbSellJunk.Location = new System.Drawing.Point(311, 409);
             this.cbSellJunk.Name = "cbSellJunk";
             this.cbSellJunk.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbSellJunk.Size = new System.Drawing.Size(66, 17);
@@ -321,11 +326,64 @@
             this.label7.TabIndex = 22;
             this.label7.Text = "Maximum Bobber Click Time";
             // 
+            // cbHerringLure
+            // 
+            this.cbHerringLure.AutoSize = true;
+            this.cbHerringLure.Location = new System.Drawing.Point(185, 409);
+            this.cbHerringLure.Name = "cbHerringLure";
+            this.cbHerringLure.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbHerringLure.Size = new System.Drawing.Size(106, 17);
+            this.cbHerringLure.TabIndex = 23;
+            this.cbHerringLure.Text = "Use Herring Lure";
+            this.cbHerringLure.UseVisualStyleBackColor = true;
+            this.cbHerringLure.CheckedChanged += new System.EventHandler(this.cbHerringLure_CheckedChanged);
+            // 
+            // lblCastCount
+            // 
+            this.lblCastCount.AutoEllipsis = true;
+            this.lblCastCount.Location = new System.Drawing.Point(78, 450);
+            this.lblCastCount.Name = "lblCastCount";
+            this.lblCastCount.Size = new System.Drawing.Size(52, 18);
+            this.lblCastCount.TabIndex = 24;
+            this.lblCastCount.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 450);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 13);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Cast Count";
+            // 
+            // lblLureTime
+            // 
+            this.lblLureTime.AutoEllipsis = true;
+            this.lblLureTime.Location = new System.Drawing.Point(200, 450);
+            this.lblLureTime.Name = "lblLureTime";
+            this.lblLureTime.Size = new System.Drawing.Size(52, 18);
+            this.lblLureTime.TabIndex = 26;
+            this.lblLureTime.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(135, 450);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(52, 13);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "Lure Cast";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(443, 451);
+            this.ClientSize = new System.Drawing.Size(441, 510);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.lblLureTime);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.lblCastCount);
+            this.Controls.Add(this.cbHerringLure);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.numMaxBobClickTime);
@@ -390,6 +448,11 @@
         private System.Windows.Forms.NumericUpDown numMaxBobClickTime;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox cbHerringLure;
+        private System.Windows.Forms.Label lblCastCount;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblLureTime;
+        private System.Windows.Forms.Label label10;
     }
 }
 

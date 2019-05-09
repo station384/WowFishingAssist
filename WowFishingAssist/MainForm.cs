@@ -55,6 +55,7 @@ namespace TestScreenCapture
         private const UInt32 SWP_NOSIZE = 0x0001;
         private const UInt32 SWP_NOMOVE = 0x0002;
         private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+        private static bool useLure = false;
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -67,7 +68,11 @@ namespace TestScreenCapture
         int warmupTime = 5000 * 10000;
         long warmupStartTime =  DateTime.Now.Ticks + (10000 * 100000);
         bool inWarmupMode = true;
-        System.Windows.Forms.Timer globalTimer = new System.Windows.Forms.Timer() { Interval=30000, Enabled= false};
+        System.Timers.Timer globalTimer = new System.Timers.Timer() { Interval=30000, Enabled= false, AutoReset = true };
+        System.Timers.Timer lureTimer = new System.Timers.Timer() { Interval = 900000, Enabled = false, AutoReset = true };
+        
+        
+        System.Windows.Forms.Timer screenUpdateTimer = new System.Windows.Forms.Timer() { Interval = 1000, Enabled = true };
 
         bool running = false;
         int origScreenHeight = 0;
@@ -77,16 +82,17 @@ namespace TestScreenCapture
         private  void PauseFishing()
         {
             warmupStartTime = DateTime.Now.Ticks + (10000 * 100000);  // delay 10 seconds before we start scanning anything.  this way the background of the image can be learned.
-            globalTimer.Enabled = false;
+            globalTimer.Stop();
             inWarmupMode = true;
             running = false;
         }
+
         private void ResumeFishing()
         {
             running = true;
             inWarmupMode = true;
             warmupStartTime = DateTime.Now.Ticks;
-            globalTimer.Enabled = true;
+            globalTimer.Start();
         }
 
         public static AForge.Vision.Motion.MotionDetector GetDefaultMotionDetector()
@@ -154,7 +160,7 @@ namespace TestScreenCapture
             await Task.Delay(50);
         }
 
-        private async void sendAChar(int key)
+        private  void sendAChar(int key)
         {
    
             PostMessage(hWnd, WM_CHAR, key, 0x0280001);
@@ -167,6 +173,56 @@ namespace TestScreenCapture
             Cursor.Position = pt;
             sendAKey(0xBB);
             CastCount++;
+        }
+
+
+        private async Task sendUseLure()
+        {
+            PauseFishing();
+            SetForegroundWindow(hWnd);    // bring Wow into the forground.
+            await Task.Delay(1000);
+            sendAKey(0xBF);  // - / 
+            await Task.Delay(100);
+            sendAChar(0x55);  // - u
+
+            sendAChar(0x53);  // - s   
+
+            sendAChar(0x45);  // - e 
+
+            sendAChar(0x20);  // - 
+
+            sendAChar(0x53);  // - s 
+            sendAChar(0x43);  // - c
+            sendAChar(0x41);  // - a
+            sendAChar(0x52);  // - r 
+            sendAChar(0x4C);  // -l
+            sendAChar(0x45);  // -e
+            sendAChar(0x54);  // -T
+            sendAChar(0x20);  // - 
+            sendAChar(0x48);  // -h
+            sendAChar(0x45);  // -e
+            sendAChar(0x52);  // -r
+            sendAChar(0x52);  // -r
+            sendAChar(0x49);  // -i
+            sendAChar(0x4E);  // -n
+            sendAChar(0x47);  // -g
+            sendAChar(0x20);  // - 
+            sendAChar(0x4C);  // -l
+            sendAChar(0x55);// -u
+            sendAChar(0x52);  // -r
+            sendAChar(0x45);  // -e
+
+          
+            sendAKey(0x0D);//Enter
+            await Task.Delay(5000);
+
+            Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+            Cursor.Position = pt;
+            DoMouseClick();
+            await Task.Delay(5000);
+            sendFishingCastCommand();
+            ResumeFishing();
+
         }
 
         private async Task sendSellSequence ()
@@ -247,27 +303,6 @@ namespace TestScreenCapture
         }
 
 
-        private async void GlobalTimer_Tick(object sender, EventArgs e)
-        {
-
-            // These event fires after 30 seconds.   This is a safety catch to make sure there is a recast.    
-            // If no motion as been detected this will fire, if motion has been detected then the timer for this event is reset.
-            globalTimer.Enabled = false;
-            if (!running) return;
-            PauseFishing();
-            motionDetector.Reset();
-
-            // Use this instead of thread.sleep to avoid pausing of the program. 
-            //  await Task.Delay(5000);   // This delay is to allow the motion detection to settle down and relearn the new background without the bobber being there.
-
-            sendFishingCastCommand();  //  Inject a keyDown and keyUp event into windows for the '=' key.  Todo: The key should be configurable.
-
-            //inWarmupMode = true;
-            //warmupStartTime = DateTime.Now.Ticks;
-            //globalTimer.Enabled = true;
-            ResumeFishing();
-        }
-
         public async void DoMouseClick()
         {
             //Call the imported function with the cursor's current position
@@ -302,19 +337,26 @@ namespace TestScreenCapture
             pt = new Point(10, 10);
             Cursor.Position = pt;
     
-            CastCount++;
-            if (CastCount > 50 && cbSellJunk.Checked)
+
+      
+            if ((CastCount % 150) == 250 && cbSellJunk.Checked)
             {
                 await sendSellSequence();
-                CastCount = 0;
                 return;
             }
-
+            if (useLure && cbHerringLure.Checked)
+            {
+                await sendUseLure();
+                useLure = false;
+                lureTimer.Start();
+                return;
+            } 
+         
             sendFishingCastCommand();
             ResumeFishing();
         }
 
-        private async void detectMovement (Bitmap b)
+        private  void detectMovement (Bitmap b)
         {
             float motionLevel = 0;
             motionLevel = motionDetector.ProcessFrame(b);
@@ -350,9 +392,9 @@ namespace TestScreenCapture
             }
             else
             {
-
                 buStartStop.Text = "Stop";
                 SetForegroundWindow(hWnd);    // bring Wow into the forground.
+                if (cbHerringLure.Checked) useLure = true;
                 ResumeFishing();
             }
         }
@@ -393,7 +435,9 @@ namespace TestScreenCapture
             SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS); // Set form as top form.  Always on top.  
             AForge.Vision.Motion.MotionDetector motionDetector = null;
             motionDetector = GetDefaultMotionDetector();
-            globalTimer.Tick += GlobalTimer_Tick;
+            globalTimer.Elapsed += GlobalTimer_Elapsed;
+            lureTimer.Elapsed += LureTimer_Elapsed; 
+            screenUpdateTimer.Tick += ScreenUpdateTimer_Tick;
 
             screenStateLogger.ScreenRefreshed += (sender1, data) =>
             {
@@ -443,6 +487,35 @@ namespace TestScreenCapture
             screenStateLogger.Start();
         }
 
+        private void GlobalTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            // These event fires after 30 seconds.   This is a safety catch to make sure there is a recast.    
+            // If no motion as been detected this will fire, if motion has been detected then the timer for this event is reset.
+            if (!running) return;
+            PauseFishing();
+            motionDetector.Reset();
+
+            sendFishingCastCommand();  //  Inject a keyDown and keyUp event into windows for the '=' key.  Todo: The key should be configurable.
+
+            ResumeFishing();
+        }
+
+        private void LureTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            useLure = true;
+            lureTimer.Stop();
+        }
+
+       
+
+        private void ScreenUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            lblCastCount.Text = CastCount.ToString();
+            lblLureTime.Text = useLure ? "1" : "0";
+        }
+
+
+
         private void numMinBobClickTime_ValueChanged(object sender, EventArgs e)
         {
             numMaxBobClickTime.Minimum = this.numMinBobClickTime.Value;
@@ -451,6 +524,11 @@ namespace TestScreenCapture
         private void numMaxBobClickTime_ValueChanged(object sender, EventArgs e)
         {
             numMinBobClickTime.Maximum = numMaxBobClickTime.Value;
+        }
+
+        private void cbHerringLure_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbHerringLure.Checked) { useLure = true; } else { useLure = false; }
         }
     }
 }
