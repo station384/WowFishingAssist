@@ -339,7 +339,7 @@ namespace TestScreenCapture
     
 
       
-            if ((CastCount % 150) == 250 && cbSellJunk.Checked)
+            if ((CastCount % 150) == 149 && cbSellJunk.Checked)
             {
                 await sendSellSequence();
                 return;
