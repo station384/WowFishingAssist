@@ -57,6 +57,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.lblLureTime = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.numCastsBeforeSell = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
@@ -64,6 +66,7 @@
             this.gbColorFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMinBobClickTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).BeginInit();
             this.SuspendLayout();
             // 
             // pbViewPane
@@ -269,7 +272,7 @@
             // cbSellJunk
             // 
             this.cbSellJunk.AutoSize = true;
-            this.cbSellJunk.Location = new System.Drawing.Point(311, 409);
+            this.cbSellJunk.Location = new System.Drawing.Point(365, 409);
             this.cbSellJunk.Name = "cbSellJunk";
             this.cbSellJunk.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbSellJunk.Size = new System.Drawing.Size(66, 17);
@@ -329,7 +332,7 @@
             // cbHerringLure
             // 
             this.cbHerringLure.AutoSize = true;
-            this.cbHerringLure.Location = new System.Drawing.Point(185, 409);
+            this.cbHerringLure.Location = new System.Drawing.Point(325, 432);
             this.cbHerringLure.Name = "cbHerringLure";
             this.cbHerringLure.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbHerringLure.Size = new System.Drawing.Size(106, 17);
@@ -352,14 +355,14 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(13, 450);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 13);
+            this.label9.Size = new System.Drawing.Size(54, 13);
             this.label9.TabIndex = 25;
-            this.label9.Text = "Cast Count";
+            this.label9.Text = "Cast:Junk";
             // 
             // lblLureTime
             // 
             this.lblLureTime.AutoEllipsis = true;
-            this.lblLureTime.Location = new System.Drawing.Point(200, 450);
+            this.lblLureTime.Location = new System.Drawing.Point(247, 450);
             this.lblLureTime.Name = "lblLureTime";
             this.lblLureTime.Size = new System.Drawing.Size(52, 18);
             this.lblLureTime.TabIndex = 26;
@@ -368,17 +371,51 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(135, 450);
+            this.label10.Location = new System.Drawing.Point(182, 450);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 13);
             this.label10.TabIndex = 27;
             this.label10.Text = "Lure Cast";
+            // 
+            // numCastsBeforeSell
+            // 
+            this.numCastsBeforeSell.Location = new System.Drawing.Point(185, 409);
+            this.numCastsBeforeSell.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numCastsBeforeSell.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numCastsBeforeSell.Name = "numCastsBeforeSell";
+            this.numCastsBeforeSell.Size = new System.Drawing.Size(120, 20);
+            this.numCastsBeforeSell.TabIndex = 28;
+            this.numCastsBeforeSell.Value = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.numCastsBeforeSell.ValueChanged += new System.EventHandler(this.numCastsBeforeSell_ValueChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(64, 410);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(105, 13);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "Sell Junk Cast Count";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 510);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.numCastsBeforeSell);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.lblLureTime);
             this.Controls.Add(this.label9);
@@ -417,6 +454,7 @@
             this.gbColorFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMinBobClickTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -453,6 +491,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblLureTime;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown numCastsBeforeSell;
+        private System.Windows.Forms.Label label8;
     }
 }
 

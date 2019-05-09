@@ -56,6 +56,7 @@ namespace TestScreenCapture
         private const UInt32 SWP_NOMOVE = 0x0002;
         private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
         private static bool useLure = false;
+        private static int numCastsBeforeSellJunk = 150;
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -339,7 +340,7 @@ namespace TestScreenCapture
     
 
       
-            if ((CastCount % 150) == 149 && cbSellJunk.Checked)
+            if ((CastCount % numCastsBeforeSellJunk+1) == numCastsBeforeSellJunk && cbSellJunk.Checked)
             {
                 await sendSellSequence();
                 return;
@@ -510,7 +511,7 @@ namespace TestScreenCapture
 
         private void ScreenUpdateTimer_Tick(object sender, EventArgs e)
         {
-            lblCastCount.Text = CastCount.ToString();
+            lblCastCount.Text = String.Concat(CastCount.ToString(),":", (CastCount % numCastsBeforeSellJunk));
             lblLureTime.Text = useLure ? "1" : "0";
         }
 
@@ -529,6 +530,11 @@ namespace TestScreenCapture
         private void cbHerringLure_CheckedChanged(object sender, EventArgs e)
         {
             if (cbHerringLure.Checked) { useLure = true; } else { useLure = false; }
+        }
+
+        private void numCastsBeforeSell_ValueChanged(object sender, EventArgs e)
+        {
+            numCastsBeforeSellJunk = (int)numCastsBeforeSell.Value;
         }
     }
 }
