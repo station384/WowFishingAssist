@@ -16,14 +16,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace TestScreenCapture
+namespace WowFishingAssist
 {
     public partial class MainForm : Form
     {
         const int WM_LBUTTONDOWN = 0x201;
         const int WM_LBUTTONUP = 0x202;
-        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        private const int MOUSEEVENTF_LEFTUP = 0x04;
+        //private const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        //private const int MOUSEEVENTF_LEFTUP = 0x04;
+        private const int MOUSEEVENTF_LEFTDOWN = 0x0002;
+        private const int MOUSEEVENTF_LEFTUP = 0x0004;
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
         private const int WM_SETTEXT = 0X000C;
@@ -31,6 +33,7 @@ namespace TestScreenCapture
         const UInt32 WM_KEYDOWN = 0x0100;
         const UInt32 WM_KEYUP = 0x0101;
         const UInt32 WM_CHAR = 0x0102;
+        private int mouseClickTime  = 100;
         private Random rnd = new Random();
         [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
         private static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
@@ -219,7 +222,7 @@ namespace TestScreenCapture
 
             Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
             Cursor.Position = pt;
-            DoMouseClick();
+            DoMouseClick(pt);
             await Task.Delay(5000);
             sendFishingCastCommand();
             ResumeFishing();
@@ -287,7 +290,7 @@ namespace TestScreenCapture
 
             Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
             Cursor.Position = pt;
-            DoMouseClick();
+            DoMouseClick(pt);
             await Task.Delay(5000);
             //zoom back in
             await Task.Delay(1000);
@@ -304,15 +307,18 @@ namespace TestScreenCapture
         }
 
 
-        public async void DoMouseClick()
+        public async void DoMouseClick(Point p)
         {
+
             //Call the imported function with the cursor's current position
             int X = Cursor.Position.X;
             int Y = Cursor.Position.Y;
-            mouse_event(MOUSEEVENTF_LEFTDOWN, X, Y, 0, 0);
+            mouse_event(MOUSEEVENTF_RIGHTDOWN, X, Y, 0, 0);
+            await Task.Delay(mouseClickTime);
+            mouse_event(MOUSEEVENTF_RIGHTUP, X, Y, 0, 0);
             await Task.Delay(100);
-            mouse_event( MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
-            await Task.Delay(100);
+            // ClickOnPointTool.ClickOnPoint(hWnd, p);
+
         }
 
 
@@ -330,7 +336,7 @@ namespace TestScreenCapture
             pt = new Point(clickxPos, clickyPos);
             Cursor.Position = pt;
             await Task.Delay(rnd.Next((int)numMinBobClickTime.Value*1000,(int)numMaxBobClickTime.Value*1000));
-            DoMouseClick();  // Inject windows events for mousedown and mouseup to simulate a click on the screen where motion was detected.
+            DoMouseClick(pt);  // Inject windows events for mousedown and mouseup to simulate a click on the screen where motion was detected.
 
             await Task.Delay(2000);  // Wait for the dialogs on the screen to go away and settle down.
 
@@ -425,6 +431,7 @@ namespace TestScreenCapture
 
             var x = new AForge.Vision.Motion.MotionDetector(detector, processor);
             motionDetector = x;
+            mouseClickTime = (int)numericUpDown1.Value;
         }
 
         private void MainForm_Load(object sender, EventArgs e)

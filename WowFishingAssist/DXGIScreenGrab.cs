@@ -10,7 +10,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TestScreenCapture
+namespace WowFishingAssist
 {
 
     // Code taken from a StackOverflow or Codeplex comment.

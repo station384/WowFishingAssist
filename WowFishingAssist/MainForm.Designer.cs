@@ -1,4 +1,4 @@
-﻿namespace TestScreenCapture
+﻿namespace WowFishingAssist
 {
     partial class MainForm
     {
@@ -59,6 +59,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.numCastsBeforeSell = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
@@ -67,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMinBobClickTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // pbViewPane
@@ -379,7 +382,7 @@
             // 
             // numCastsBeforeSell
             // 
-            this.numCastsBeforeSell.Location = new System.Drawing.Point(185, 409);
+            this.numCastsBeforeSell.Location = new System.Drawing.Point(185, 431);
             this.numCastsBeforeSell.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -403,17 +406,50 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(64, 410);
+            this.label8.Location = new System.Drawing.Point(64, 432);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(105, 13);
             this.label8.TabIndex = 29;
             this.label8.Text = "Sell Junk Cast Count";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(29, 400);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(128, 13);
+            this.label11.TabIndex = 31;
+            this.label11.Text = "Time to Hold Mouse Click";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(185, 398);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 30;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 510);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.numCastsBeforeSell);
             this.Controls.Add(this.label10);
@@ -455,6 +491,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMinBobClickTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,6 +530,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown numCastsBeforeSell;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 
