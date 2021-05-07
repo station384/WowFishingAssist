@@ -2,9 +2,13 @@
 Automates fishing in World of Warcraft.
 
 ### Options in World or warcraft.
-Casting needs to be tied to the = button on the cast bar.
 
 Auto loot needs to be turned on.
+
+To utilize baits you must put the bait in a button bar that uses the = key as a map (usually the last button on your main bar)
+
+To utilize sell junk you will need a traveling tundra mount, and you will need to zoom in first person then save your camera view 1 focused on the bobber.
+
 
 ### Useage
 Note make sure you have room in your bags.
