@@ -59,6 +59,7 @@ namespace WowFishingAssist
         private const UInt32 SWP_NOMOVE = 0x0002;
         private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
         private static bool useLure = false;
+        private static bool useBait = false;
         private static int numCastsBeforeSellJunk = 150;
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -72,10 +73,12 @@ namespace WowFishingAssist
         int warmupTime = 5000 * 10000;
         long warmupStartTime =  DateTime.Now.Ticks + (10000 * 100000);
         bool inWarmupMode = true;
-        System.Timers.Timer globalTimer = new System.Timers.Timer() { Interval=30000, Enabled= false, AutoReset = true };
-        System.Timers.Timer lureTimer = new System.Timers.Timer() { Interval = 900000, Enabled = false, AutoReset = true };
-        
-        
+        readonly System.Timers.Timer globalTimer = new System.Timers.Timer() { Interval=30000, Enabled= false, AutoReset = true }; // 30 Seconds
+        readonly System.Timers.Timer lureTimer = new System.Timers.Timer() { Interval = 900000, Enabled = false, AutoReset = true }; // 15 minutes
+        readonly System.Timers.Timer baitTimer = new System.Timers.Timer() { Interval = 1800000, Enabled = false, AutoReset = true }; // 30 minutes
+
+
+
         System.Windows.Forms.Timer screenUpdateTimer = new System.Windows.Forms.Timer() { Interval = 1000, Enabled = true };
 
         bool running = false;
@@ -171,34 +174,47 @@ namespace WowFishingAssist
            
         }
 
-        private  void sendFishingCastCommand ()
+        private async Task sendFishingCastCommand ()
         {
+            SetForegroundWindow(hWnd);    // bring Wow into the forground.
             Point pt = new Point(10, 10);
             Cursor.Position = pt;
-            sendAKey(0xBB);
+            // sendAKey(0xBB);
+            sendAKey(0xBF);  // - / 
+            await Task.Delay(100);
+            sendAChar(0x43);  // - C
+            sendAChar(0x41);  // - A   
+            sendAChar(0x53);  // - S 
+            sendAChar(0x54);  // - T
+            sendAChar(0x20);  // - 
+            sendAChar(0x66);  // -f
+            sendAChar(0x49);  // -i
+            sendAChar(0x53);  // -s 
+            sendAChar(0x48);  // -h
+            sendAChar(0x49);  // -i
+            sendAChar(0x4E);  // -n
+            sendAChar(0x47);  // -g
+            sendAKey(0x0D);//Enter
+            await Task.Delay(100);
             CastCount++;
         }
 
-
         private async Task sendUseLure()
         {
-            PauseFishing();
+        //    PauseFishing();
             SetForegroundWindow(hWnd);    // bring Wow into the forground.
             await Task.Delay(1000);
             sendAKey(0xBF);  // - / 
             await Task.Delay(100);
-            sendAChar(0x55);  // - u
-
-            sendAChar(0x53);  // - s   
-
-            sendAChar(0x45);  // - e 
-
+            sendAChar(0x55);  // -u
+            sendAChar(0x53);  // -s   
+            sendAChar(0x45);  // -e 
             sendAChar(0x20);  // - 
 
-            sendAChar(0x53);  // - s 
-            sendAChar(0x43);  // - c
-            sendAChar(0x41);  // - a
-            sendAChar(0x52);  // - r 
+            sendAChar(0x53);  // -s 
+            sendAChar(0x43);  // -c
+            sendAChar(0x41);  // -a
+            sendAChar(0x52);  // -r 
             sendAChar(0x4C);  // -l
             sendAChar(0x45);  // -e
             sendAChar(0x54);  // -T
@@ -212,7 +228,7 @@ namespace WowFishingAssist
             sendAChar(0x47);  // -g
             sendAChar(0x20);  // - 
             sendAChar(0x4C);  // -l
-            sendAChar(0x55);// -u
+            sendAChar(0x55);  // -u
             sendAChar(0x52);  // -r
             sendAChar(0x45);  // -e
 
@@ -222,16 +238,64 @@ namespace WowFishingAssist
 
             Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
             Cursor.Position = pt;
-            DoMouseClick(pt);
+          //  DoMouseClick(pt);
             await Task.Delay(5000);
-            sendFishingCastCommand();
-            ResumeFishing();
+           // await sendFishingCastCommand();
+        //    ResumeFishing();
 
         }
 
+        private async Task sendUseBait()
+        {
+        //    PauseFishing();
+            //SetForegroundWindow(hWnd);    // bring Wow into the forground.
+            //await Task.Delay(1000);
+            //sendAKey(0xBF);  // - / 
+            //await Task.Delay(100);
+            //sendAChar(0x55);  // -u
+            //sendAChar(0x53);  // -s   
+            //sendAChar(0x45);  // -e 
+            //sendAChar(0x20);  // - 
+            //sendAChar(0x45);  // -e
+            //sendAChar(0x4C);  // -l
+            //sendAChar(0x79);  // -y
+            //sendAChar(0x53);  // -s 
+            //sendAChar(0x49);  // -i
+            //sendAChar(0x41);  // -a
+            //sendAChar(0x4E);  // -n
+            //sendAChar(0x20);  // - 
+            //sendAChar(0x74);  // -t
+            //sendAChar(0x48);  // -h
+            //sendAChar(0x41);  // -a
+            //sendAChar(0x64);  // -d
+            //sendAChar(0x45);  // -e
+            //sendAChar(0x20);  // - 
+            //sendAChar(0x62);  // -b
+            //sendAChar(0x61);  // -a
+            //sendAChar(0x69);  // -i
+            //sendAChar(0x74);  // -t
+            //sendAKey(0x0D);//Enter
+            //await Task.Delay(5000);
+
+            // Seems bait has to be tied to an action key.    so Tieing to the old fishing key of =   the bait you want to use needs to be place in that slot.
+            SetForegroundWindow(hWnd);    // bring Wow into the forground.
+            await Task.Delay(1000);
+            sendAKey(0xBB);
+
+            Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+            Cursor.Position = pt;
+            //DoMouseClick(pt);
+            await Task.Delay(1000);
+         //   await sendFishingCastCommand();
+          //  ResumeFishing();
+
+        }
+
+
+
         private async Task sendSellSequence ()
         {
-            PauseFishing();
+            //PauseFishing();
             SetForegroundWindow(hWnd);    // bring Wow into the forground.
             await Task.Delay(1000);
             sendAKey(0x23);  // - End
@@ -244,48 +308,37 @@ namespace WowFishingAssist
             await Task.Delay(100);
             sendAKey(0xBF);  // - / 
             await Task.Delay(100);
-            sendAChar(0x43);  // - C
-       
-            sendAChar(0x41);  // - A   
-      
-            sendAChar(0x53);  // - S 
-         
-            sendAChar(0x54);  // - T
-       
+            sendAChar(0x43);  // -C
+            sendAChar(0x41);  // -A   
+            sendAChar(0x53);  // -S 
+            sendAChar(0x54);  // -T
             sendAChar(0x20);  // - 
-       
             sendAChar(0x54);  // -T  
-         
             sendAChar(0x52);  // -r 
-           
             sendAChar(0x41);  // -a
-          
             sendAChar(0x56);  // -v
-          
-            sendAChar(0x45);// -e
-        
-            sendAChar(0x4C);// -l
-         
-            sendAChar(0x45);// -e
+            sendAChar(0x45);  // -e
+            sendAChar(0x4C);  // -l
+            sendAChar(0x45);  // -e
             sendAChar(0x52);  // -r
-            sendAChar(0x27);// -'
-            sendAChar(0x53);// -s
+            sendAChar(0x27);  // -'
+            sendAChar(0x53);  // -s
             sendAChar(0x20);  // -
-            sendAChar(0x54); // -T
-            sendAChar(0x55);// -u
-            sendAChar(0x4E);// -n
-            sendAChar(0x44);// -d
+            sendAChar(0x54);  // -T
+            sendAChar(0x55);  // -u
+            sendAChar(0x4E);  // -n
+            sendAChar(0x44);  // -d
             sendAChar(0x52);  // -r
-            sendAChar(0x41); // -a
-            sendAChar(0x20);  // -
-            sendAChar(0x4D);// -M
             sendAChar(0x41);  // -a
-            sendAChar(0x4D);// -m
-            sendAChar(0x4D);// -m
-            sendAChar(0x4F);// -o
+            sendAChar(0x20);  // -
+            sendAChar(0x4D);  // -M
+            sendAChar(0x41);  // -a
+            sendAChar(0x4D);  // -m
+            sendAChar(0x4D);  // -m
+            sendAChar(0x4F);  // -o
             sendAChar(0x54);  // -t
-            sendAChar(0x48);// -h
-            sendAKey(0x0D);//Enter
+            sendAChar(0x48);  // -h
+            sendAKey(0x0D);   // Enter
             await Task.Delay(5000);
 
             Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
@@ -301,9 +354,10 @@ namespace WowFishingAssist
             sendAKey(0x24);  // - End
             await Task.Delay(1000);
             sendAKey(0x24);  // - End
-            sendFishingCastCommand();
-            ResumeFishing();
-            
+            await Task.Delay(1000);
+            // await sendFishingCastCommand();
+            // ResumeFishing();
+
         }
 
 
@@ -349,17 +403,24 @@ namespace WowFishingAssist
             if ((CastCount % numCastsBeforeSellJunk+1) == numCastsBeforeSellJunk && cbSellJunk.Checked)
             {
                 await sendSellSequence();
-                return;
+                //return;
             }
             if (useLure && cbHerringLure.Checked)
             {
                 await sendUseLure();
                 useLure = false;
                 lureTimer.Start();
-                return;
-            } 
-         
-            sendFishingCastCommand();
+                //return;
+            }
+            if (useBait && cbUseBait.Checked)
+            {
+                await sendUseBait();
+                useBait = false;
+                baitTimer.Start();
+                //return;
+            }
+
+            await sendFishingCastCommand();
             ResumeFishing();
         }
 
@@ -387,6 +448,8 @@ namespace WowFishingAssist
     
         }
 
+        
+        
         private void buStartStop_Click(object sender, EventArgs e)
         {
             Process[] p = Process.GetProcessesByName("Wow");
@@ -402,9 +465,12 @@ namespace WowFishingAssist
                 buStartStop.Text = "Stop";
                 SetForegroundWindow(hWnd);    // bring Wow into the forground.
                 if (cbHerringLure.Checked) useLure = true;
+                if (cbHerringLure.Checked) useBait = true;
                 ResumeFishing();
             }
         }
+
+
 
         private void buApplySettings_Click(object sender, EventArgs e)
         {
@@ -444,7 +510,8 @@ namespace WowFishingAssist
             AForge.Vision.Motion.MotionDetector motionDetector = null;
             motionDetector = GetDefaultMotionDetector();
             globalTimer.Elapsed += GlobalTimer_Elapsed;
-            lureTimer.Elapsed += LureTimer_Elapsed; 
+            lureTimer.Elapsed += LureTimer_Elapsed;
+            baitTimer.Elapsed += BaitTimer_Elapsed;
             screenUpdateTimer.Tick += ScreenUpdateTimer_Tick;
 
             screenStateLogger.ScreenRefreshed += (sender1, data) =>
@@ -495,7 +562,13 @@ namespace WowFishingAssist
             screenStateLogger.Start();
         }
 
-        private void GlobalTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void BaitTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            useBait = true;
+            baitTimer.Stop();
+        }
+
+        private async void GlobalTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             // These event fires after 30 seconds.   This is a safety catch to make sure there is a recast.    
             // If no motion as been detected this will fire, if motion has been detected then the timer for this event is reset.
@@ -503,7 +576,7 @@ namespace WowFishingAssist
             PauseFishing();
             motionDetector.Reset();
 
-            sendFishingCastCommand();  //  Inject a keyDown and keyUp event into windows for the '=' key.  Todo: The key should be configurable.
+            await sendFishingCastCommand();  //  Inject a keyDown and keyUp event into windows for the '=' key.  Todo: The key should be configurable.
 
             ResumeFishing();
         }
@@ -542,6 +615,12 @@ namespace WowFishingAssist
         private void numCastsBeforeSell_ValueChanged(object sender, EventArgs e)
         {
             numCastsBeforeSellJunk = (int)numCastsBeforeSell.Value;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            gbBaitType.Enabled = cbUseBait.Checked;
+            useBait = cbUseBait.Checked;
         }
     }
 }

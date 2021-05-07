@@ -61,6 +61,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.gbBaitType = new System.Windows.Forms.GroupBox();
+            this.rbBait1ET = new System.Windows.Forms.RadioButton();
+            this.cbUseBait = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
@@ -70,20 +73,21 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.gbBaitType.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbViewPane
             // 
-            this.pbViewPane.Location = new System.Drawing.Point(12, 13);
+            this.pbViewPane.Location = new System.Drawing.Point(46, 12);
             this.pbViewPane.Name = "pbViewPane";
-            this.pbViewPane.Size = new System.Drawing.Size(419, 225);
+            this.pbViewPane.Size = new System.Drawing.Size(419, 229);
             this.pbViewPane.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbViewPane.TabIndex = 0;
             this.pbViewPane.TabStop = false;
             // 
             // buStartStop
             // 
-            this.buStartStop.Location = new System.Drawing.Point(356, 475);
+            this.buStartStop.Location = new System.Drawing.Point(309, 476);
             this.buStartStop.Name = "buStartStop";
             this.buStartStop.Size = new System.Drawing.Size(75, 23);
             this.buStartStop.TabIndex = 1;
@@ -131,7 +135,7 @@
             // 
             this.numDifferenceThreshold.Location = new System.Drawing.Point(185, 248);
             this.numDifferenceThreshold.Name = "numDifferenceThreshold";
-            this.numDifferenceThreshold.Size = new System.Drawing.Size(120, 20);
+            this.numDifferenceThreshold.Size = new System.Drawing.Size(49, 20);
             this.numDifferenceThreshold.TabIndex = 6;
             this.numDifferenceThreshold.Value = new decimal(new int[] {
             15,
@@ -143,7 +147,7 @@
             // 
             this.numPerBackgroundUpdate.Location = new System.Drawing.Point(185, 273);
             this.numPerBackgroundUpdate.Name = "numPerBackgroundUpdate";
-            this.numPerBackgroundUpdate.Size = new System.Drawing.Size(120, 20);
+            this.numPerBackgroundUpdate.Size = new System.Drawing.Size(49, 20);
             this.numPerBackgroundUpdate.TabIndex = 7;
             this.numPerBackgroundUpdate.Value = new decimal(new int[] {
             5,
@@ -155,7 +159,7 @@
             // 
             this.numMsPerBackgroupUpdate.Location = new System.Drawing.Point(185, 299);
             this.numMsPerBackgroupUpdate.Name = "numMsPerBackgroupUpdate";
-            this.numMsPerBackgroupUpdate.Size = new System.Drawing.Size(120, 20);
+            this.numMsPerBackgroupUpdate.Size = new System.Drawing.Size(49, 20);
             this.numMsPerBackgroupUpdate.TabIndex = 8;
             this.numMsPerBackgroupUpdate.Value = new decimal(new int[] {
             5,
@@ -176,7 +180,7 @@
             // 
             // buApplySettings
             // 
-            this.buApplySettings.Location = new System.Drawing.Point(191, 475);
+            this.buApplySettings.Location = new System.Drawing.Point(159, 475);
             this.buApplySettings.Name = "buApplySettings";
             this.buApplySettings.Size = new System.Drawing.Size(75, 23);
             this.buApplySettings.TabIndex = 10;
@@ -191,7 +195,7 @@
             this.gbColorFilters.Controls.Add(this.rbGreenFilter);
             this.gbColorFilters.Controls.Add(this.rbRedFilter);
             this.gbColorFilters.Controls.Add(this.rbNoFiltering);
-            this.gbColorFilters.Location = new System.Drawing.Point(311, 244);
+            this.gbColorFilters.Location = new System.Drawing.Point(390, 251);
             this.gbColorFilters.Name = "gbColorFilters";
             this.gbColorFilters.Size = new System.Drawing.Size(120, 141);
             this.gbColorFilters.TabIndex = 15;
@@ -275,7 +279,7 @@
             // cbSellJunk
             // 
             this.cbSellJunk.AutoSize = true;
-            this.cbSellJunk.Location = new System.Drawing.Point(365, 409);
+            this.cbSellJunk.Location = new System.Drawing.Point(292, 251);
             this.cbSellJunk.Name = "cbSellJunk";
             this.cbSellJunk.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbSellJunk.Size = new System.Drawing.Size(66, 17);
@@ -292,8 +296,13 @@
             0,
             0});
             this.numMinBobClickTime.Name = "numMinBobClickTime";
-            this.numMinBobClickTime.Size = new System.Drawing.Size(120, 20);
+            this.numMinBobClickTime.Size = new System.Drawing.Size(49, 20);
             this.numMinBobClickTime.TabIndex = 19;
+            this.numMinBobClickTime.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numMinBobClickTime.ValueChanged += new System.EventHandler(this.numMinBobClickTime_ValueChanged);
             // 
             // numMaxBobClickTime
@@ -305,7 +314,7 @@
             0,
             0});
             this.numMaxBobClickTime.Name = "numMaxBobClickTime";
-            this.numMaxBobClickTime.Size = new System.Drawing.Size(120, 20);
+            this.numMaxBobClickTime.Size = new System.Drawing.Size(49, 20);
             this.numMaxBobClickTime.TabIndex = 20;
             this.numMaxBobClickTime.Value = new decimal(new int[] {
             2,
@@ -335,7 +344,7 @@
             // cbHerringLure
             // 
             this.cbHerringLure.AutoSize = true;
-            this.cbHerringLure.Location = new System.Drawing.Point(325, 432);
+            this.cbHerringLure.Location = new System.Drawing.Point(252, 274);
             this.cbHerringLure.Name = "cbHerringLure";
             this.cbHerringLure.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cbHerringLure.Size = new System.Drawing.Size(106, 17);
@@ -382,7 +391,7 @@
             // 
             // numCastsBeforeSell
             // 
-            this.numCastsBeforeSell.Location = new System.Drawing.Point(185, 431);
+            this.numCastsBeforeSell.Location = new System.Drawing.Point(185, 424);
             this.numCastsBeforeSell.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -394,7 +403,7 @@
             0,
             0});
             this.numCastsBeforeSell.Name = "numCastsBeforeSell";
-            this.numCastsBeforeSell.Size = new System.Drawing.Size(120, 20);
+            this.numCastsBeforeSell.Size = new System.Drawing.Size(49, 20);
             this.numCastsBeforeSell.TabIndex = 28;
             this.numCastsBeforeSell.Value = new decimal(new int[] {
             150,
@@ -406,7 +415,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(64, 432);
+            this.label8.Location = new System.Drawing.Point(64, 425);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(105, 13);
             this.label8.TabIndex = 29;
@@ -435,7 +444,7 @@
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(49, 20);
             this.numericUpDown1.TabIndex = 30;
             this.numericUpDown1.Value = new decimal(new int[] {
             500,
@@ -443,11 +452,48 @@
             0,
             0});
             // 
+            // gbBaitType
+            // 
+            this.gbBaitType.Controls.Add(this.rbBait1ET);
+            this.gbBaitType.Enabled = false;
+            this.gbBaitType.Location = new System.Drawing.Point(250, 326);
+            this.gbBaitType.Name = "gbBaitType";
+            this.gbBaitType.Size = new System.Drawing.Size(134, 100);
+            this.gbBaitType.TabIndex = 32;
+            this.gbBaitType.TabStop = false;
+            this.gbBaitType.Text = "Bait Type";
+            // 
+            // rbBait1ET
+            // 
+            this.rbBait1ET.AutoSize = true;
+            this.rbBait1ET.Checked = true;
+            this.rbBait1ET.Location = new System.Drawing.Point(6, 18);
+            this.rbBait1ET.Name = "rbBait1ET";
+            this.rbBait1ET.Size = new System.Drawing.Size(92, 17);
+            this.rbBait1ET.TabIndex = 5;
+            this.rbBait1ET.TabStop = true;
+            this.rbBait1ET.Text = "Elysian Thade";
+            this.rbBait1ET.UseVisualStyleBackColor = true;
+            // 
+            // cbUseBait
+            // 
+            this.cbUseBait.AutoSize = true;
+            this.cbUseBait.Location = new System.Drawing.Point(292, 297);
+            this.cbUseBait.Name = "cbUseBait";
+            this.cbUseBait.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbUseBait.Size = new System.Drawing.Size(66, 17);
+            this.cbUseBait.TabIndex = 33;
+            this.cbUseBait.Text = "Use Bait";
+            this.cbUseBait.UseVisualStyleBackColor = true;
+            this.cbUseBait.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 510);
+            this.ClientSize = new System.Drawing.Size(518, 510);
+            this.Controls.Add(this.cbUseBait);
+            this.Controls.Add(this.gbBaitType);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label8);
@@ -492,6 +538,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMaxBobClickTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.gbBaitType.ResumeLayout(false);
+            this.gbBaitType.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -532,6 +580,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.GroupBox gbBaitType;
+        private System.Windows.Forms.RadioButton rbBait1ET;
+        private System.Windows.Forms.CheckBox cbUseBait;
     }
 }
 
