@@ -236,8 +236,8 @@ namespace WowFishingAssist
             sendAKey(0x0D);//Enter
             await Task.Delay(5000);
 
-            Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
-            Cursor.Position = pt;
+          //  Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+         //   Cursor.Position = pt;
           //  DoMouseClick(pt);
             await Task.Delay(5000);
            // await sendFishingCastCommand();
@@ -282,8 +282,8 @@ namespace WowFishingAssist
             await Task.Delay(1000);
             sendAKey(0xBB);
 
-            Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
-            Cursor.Position = pt;
+            //Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+            //Cursor.Position = pt;
             //DoMouseClick(pt);
             await Task.Delay(1000);
          //   await sendFishingCastCommand();
@@ -344,6 +344,7 @@ namespace WowFishingAssist
             Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
             Cursor.Position = pt;
             DoMouseClick(pt);
+
             await Task.Delay(5000);
             //zoom back in
             await Task.Delay(1000);
