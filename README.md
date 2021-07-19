@@ -15,12 +15,13 @@ Note make sure you have room in your bags.
 
 You may have to seed slots with fish you want, otherwise junk items will eventually take up the spots.
 
+0. Load WOW.
 1. Find a place to fish.
 2. Load the Wow Fishing Assistant
 3. Zoom in your view on your charater so you are in first person view
-4. Press the = button to cast
+4. Cast you fishing ling a few times
 5. Adjust you view (camera) so the bobber appears in the monitor window
-6. Press the = button a few times and make sure each cast is within the bounds of the monitor
+6. Cast a few times and make sure each cast is within the bounds of the monitor
 7. When everything looks good click start.
 
 ## Advanced features
