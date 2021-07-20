@@ -456,10 +456,16 @@ namespace WowFishingAssist
             Process[] p = Process.GetProcessesByName("Wow");
            if (p.Length == 0)
             {
+                p = Process.GetProcessesByName("WowClassic");
+                return;
+            }
+
+            if (p.Length == 0)
+            {
                 MessageBox.Show("WOW.exe Process not found, Load World of Warcraft.");
                 return;
             }
-            
+
             hWnd = p[0].MainWindowHandle;
            
 
