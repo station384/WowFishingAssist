@@ -64,6 +64,8 @@
             this.gbBaitType = new System.Windows.Forms.GroupBox();
             this.rbBait1ET = new System.Windows.Forms.RadioButton();
             this.cbUseBait = new System.Windows.Forms.CheckBox();
+            this.frameCaptureRateMS = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
@@ -74,6 +76,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCastsBeforeSell)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.gbBaitType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.frameCaptureRateMS)).BeginInit();
             this.SuspendLayout();
             // 
             // pbViewPane
@@ -130,7 +133,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(152, 503);
+            this.label4.Location = new System.Drawing.Point(591, 618);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 20);
@@ -145,11 +148,10 @@
             this.numDifferenceThreshold.Size = new System.Drawing.Size(74, 26);
             this.numDifferenceThreshold.TabIndex = 6;
             this.numDifferenceThreshold.Value = new decimal(new int[] {
-            100,
+            70,
             0,
             0,
             0});
-            this.numDifferenceThreshold.ValueChanged += new System.EventHandler(this.numDifferenceThreshold_ValueChanged);
             // 
             // numPerBackgroundUpdate
             // 
@@ -182,7 +184,7 @@
             this.cbSuppressNoise.AutoSize = true;
             this.cbSuppressNoise.Checked = true;
             this.cbSuppressNoise.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSuppressNoise.Location = new System.Drawing.Point(278, 502);
+            this.cbSuppressNoise.Location = new System.Drawing.Point(716, 618);
             this.cbSuppressNoise.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbSuppressNoise.Name = "cbSuppressNoise";
             this.cbSuppressNoise.Size = new System.Drawing.Size(22, 21);
@@ -526,11 +528,38 @@
             this.cbUseBait.UseVisualStyleBackColor = true;
             this.cbUseBait.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // frameCaptureRateMS
+            // 
+            this.frameCaptureRateMS.Location = new System.Drawing.Point(277, 495);
+            this.frameCaptureRateMS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.frameCaptureRateMS.Name = "frameCaptureRateMS";
+            this.frameCaptureRateMS.Size = new System.Drawing.Size(74, 26);
+            this.frameCaptureRateMS.TabIndex = 34;
+            this.frameCaptureRateMS.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.frameCaptureRateMS.Visible = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(111, 498);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(155, 20);
+            this.label12.TabIndex = 35;
+            this.label12.Text = "Frame Capture Rate";
+            this.label12.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(777, 785);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.frameCaptureRateMS);
             this.Controls.Add(this.cbUseBait);
             this.Controls.Add(this.gbBaitType);
             this.Controls.Add(this.label11);
@@ -580,6 +609,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.gbBaitType.ResumeLayout(false);
             this.gbBaitType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.frameCaptureRateMS)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -623,6 +653,8 @@
         private System.Windows.Forms.GroupBox gbBaitType;
         private System.Windows.Forms.RadioButton rbBait1ET;
         private System.Windows.Forms.CheckBox cbUseBait;
+        private System.Windows.Forms.NumericUpDown frameCaptureRateMS;
+        private System.Windows.Forms.Label label12;
     }
 }
 

@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using WowFishingAssist;
 
 namespace WowFishingAssist
 {
@@ -33,7 +34,7 @@ namespace WowFishingAssist
         const UInt32 WM_KEYDOWN = 0x0100;
         const UInt32 WM_KEYUP = 0x0101;
         const UInt32 WM_CHAR = 0x0102;
-        private int mouseClickTime  = 100;
+        private int mouseClickTime = 100;
         private Random rnd = new Random();
         [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
         private static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
@@ -71,9 +72,9 @@ namespace WowFishingAssist
         AForge.Vision.Motion.MotionDetector motionDetector = GetDefaultMotionDetector();
 
         int warmupTime = 5000 * 10000;
-        long warmupStartTime =  DateTime.Now.Ticks + (10000 * 100000);
+        long warmupStartTime = DateTime.Now.Ticks + (10000 * 100000);
         bool inWarmupMode = true;
-        readonly System.Timers.Timer globalTimer = new System.Timers.Timer() { Interval=30000, Enabled= false, AutoReset = true }; // 30 Seconds
+        readonly System.Timers.Timer globalTimer = new System.Timers.Timer() { Interval = 30000, Enabled = false, AutoReset = true }; // 30 Seconds
         readonly System.Timers.Timer lureTimer = new System.Timers.Timer() { Interval = 900000, Enabled = false, AutoReset = true }; // 15 minutes
         readonly System.Timers.Timer baitTimer = new System.Timers.Timer() { Interval = 1800000, Enabled = false, AutoReset = true }; // 30 minutes
 
@@ -86,7 +87,7 @@ namespace WowFishingAssist
         int origScreenWidth = 0;
         int CastCount = 0;
 
-        private  void PauseFishing()
+        private void PauseFishing()
         {
             warmupStartTime = DateTime.Now.Ticks + (10000 * 100000);  // delay 10 seconds before we start scanning anything.  this way the background of the image can be learned.
             globalTimer.Stop();
@@ -124,7 +125,7 @@ namespace WowFishingAssist
             // This is currently the best one.
             detector = new AForge.Vision.Motion.SimpleBackgroundModelingDetector()
             {
-                DifferenceThreshold = 15,
+                DifferenceThreshold = 50,
                 FramesPerBackgroundUpdate = 5,
                 KeepObjectsEdges = true,
                 MillisecondsPerBackgroundUpdate = 5,
@@ -147,7 +148,7 @@ namespace WowFishingAssist
                 MinObjectsHeight = 20,
                 MinObjectsWidth = 20
             };
-        
+
             motionDetector = new AForge.Vision.Motion.MotionDetector(detector, processor);
 
             return (motionDetector);
@@ -158,7 +159,7 @@ namespace WowFishingAssist
             InitializeComponent();
         }
 
-        private async void sendAKey (int key)
+        private async void sendAKey(int key)
         {
             await Task.Delay(50);
             PostMessage(hWnd, WM_KEYDOWN, key, 0);
@@ -167,14 +168,14 @@ namespace WowFishingAssist
             await Task.Delay(50);
         }
 
-        private  void sendAChar(int key)
+        private void sendAChar(int key)
         {
-   
+
             PostMessage(hWnd, WM_CHAR, key, 0x0280001);
-           
+
         }
 
-        private async Task sendFishingCastCommand ()
+        private async Task sendFishingCastCommand()
         {
             SetForegroundWindow(hWnd);    // bring Wow into the forground.
             Point pt = new Point(10, 10);
@@ -201,7 +202,7 @@ namespace WowFishingAssist
 
         private async Task sendUseLure()
         {
-        //    PauseFishing();
+            //    PauseFishing();
             SetForegroundWindow(hWnd);    // bring Wow into the forground.
             await Task.Delay(1000);
             sendAKey(0xBF);  // - / 
@@ -232,22 +233,22 @@ namespace WowFishingAssist
             sendAChar(0x52);  // -r
             sendAChar(0x45);  // -e
 
-          
+
             sendAKey(0x0D);//Enter
             await Task.Delay(5000);
 
-          //  Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
-         //   Cursor.Position = pt;
-          //  DoMouseClick(pt);
+            //  Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+            //   Cursor.Position = pt;
+            //  DoMouseClick(pt);
             await Task.Delay(5000);
-           // await sendFishingCastCommand();
-        //    ResumeFishing();
+            // await sendFishingCastCommand();
+            //    ResumeFishing();
 
         }
 
         private async Task sendUseBait()
         {
-        //    PauseFishing();
+            //    PauseFishing();
             //SetForegroundWindow(hWnd);    // bring Wow into the forground.
             //await Task.Delay(1000);
             //sendAKey(0xBF);  // - / 
@@ -286,14 +287,14 @@ namespace WowFishingAssist
             //Cursor.Position = pt;
             //DoMouseClick(pt);
             await Task.Delay(1000);
-         //   await sendFishingCastCommand();
-          //  ResumeFishing();
+            //   await sendFishingCastCommand();
+            //  ResumeFishing();
 
         }
 
 
 
-        private async Task sendSellSequence ()
+        private async Task sendSellSequence()
         {
             //PauseFishing();
             SetForegroundWindow(hWnd);    // bring Wow into the forground.
@@ -383,14 +384,14 @@ namespace WowFishingAssist
             Point pt;
             PauseFishing();
             //Get the biggest bounding box.
-  
+
 
             // set it to move the mouse to the center of bounding box. 
             int clickxPos = ((int)(origScreenWidth * 0.40) + x1.Right) - (x1.Width / 2);
             int clickyPos = ((int)(origScreenHeight * 0.50) + x1.Bottom) - (x1.Height / 2);
             pt = new Point(clickxPos, clickyPos);
             Cursor.Position = pt;
-            await Task.Delay(rnd.Next((int)numMinBobClickTime.Value*1000,(int)numMaxBobClickTime.Value*1000));
+            await Task.Delay(rnd.Next((int)numMinBobClickTime.Value * 1000, (int)numMaxBobClickTime.Value * 1000));
             DoMouseClick(pt);  // Inject windows events for mousedown and mouseup to simulate a click on the screen where motion was detected.
 
             await Task.Delay(2000);  // Wait for the dialogs on the screen to go away and settle down.
@@ -398,10 +399,10 @@ namespace WowFishingAssist
             //Move the cursor to the upper left corner for resting.  this avoids it accedently highliting the bobber can causing a false positive.
             pt = new Point(10, 10);
             Cursor.Position = pt;
-    
 
-      
-            if ((CastCount % numCastsBeforeSellJunk+1) == numCastsBeforeSellJunk && cbSellJunk.Checked)
+
+
+            if ((CastCount % numCastsBeforeSellJunk + 1) == numCastsBeforeSellJunk && cbSellJunk.Checked)
             {
                 await sendSellSequence();
                 //return;
@@ -425,7 +426,7 @@ namespace WowFishingAssist
             ResumeFishing();
         }
 
-        private  void detectMovement (Bitmap b)
+        private void detectMovement(Bitmap b)
         {
             float motionLevel = 0;
             motionLevel = motionDetector.ProcessFrame(b);
@@ -433,28 +434,28 @@ namespace WowFishingAssist
             {
                 if (DateTime.Now.Ticks - warmupTime > warmupStartTime)
                     inWarmupMode = false;
-                
+
                 return;
             }
-           
-        
+
+
             Rectangle[] i = ((AForge.Vision.Motion.BlobCountingObjectsProcessing)motionDetector.MotionProcessingAlgorithm).ObjectRectangles;
-           
+
             if (i.Count() > 0)
             {
                 Rectangle x1 = i.OrderByDescending(item => item.Height * item.Width).FirstOrDefault();
                 ClickBobber(x1);
             }
-  
-    
+
+
         }
 
-        
-        
+
+
         private void buStartStop_Click(object sender, EventArgs e)
         {
             Process[] p = Process.GetProcessesByName("Wow");
-           if (p.Length == 0)
+            if (p.Length == 0)
             {
                 p = Process.GetProcessesByName("WowClassic");
                 return;
@@ -467,7 +468,7 @@ namespace WowFishingAssist
             }
 
             hWnd = p[0].MainWindowHandle;
-           
+
 
             //  sendSellSequence();
             if (running)
@@ -492,6 +493,7 @@ namespace WowFishingAssist
             AForge.Vision.Motion.IMotionDetector detector = null;
             AForge.Vision.Motion.IMotionProcessing processor = null;
 
+            mouseClickTime = (int)numericUpDown1.Value;
 
             detector = new AForge.Vision.Motion.SimpleBackgroundModelingDetector(cbSuppressNoise.Checked)
             {
@@ -510,25 +512,22 @@ namespace WowFishingAssist
                 MinObjectsWidth = 20
             };
 
+            if (motionDetector != null)
+            {
+                motionDetector.Reset();  // not really needed as such.   but why not,  just incase.
+                motionDetector = null;  // make sure this the object tied to this variable gets disconnected and is cleaned up by garbage collection. again shouldn't be needed but JIC
+            }
+
+     //       screenStateLogger.Stop();
+      //      screenStateLogger.Start();
             var x = new AForge.Vision.Motion.MotionDetector(detector, processor);
             motionDetector = x;
-            mouseClickTime = (int)numericUpDown1.Value;
+
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+
+        private void startScreenGrab()
         {
-            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            Text = Text + " " + version.Major + "." + version.Minor + " (build " + version.Build + ")"; //change form title
-
-            //todo: make this user selectable.
-            SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS); // Set form as top form.  Always on top.  
-            AForge.Vision.Motion.MotionDetector motionDetector = null;
-            motionDetector = GetDefaultMotionDetector();
-            globalTimer.Elapsed += GlobalTimer_Elapsed;
-            lureTimer.Elapsed += LureTimer_Elapsed;
-            baitTimer.Elapsed += BaitTimer_Elapsed;
-            screenUpdateTimer.Tick += ScreenUpdateTimer_Tick;
-
             screenStateLogger.ScreenRefreshed += (sender1, data) =>
             {
                 //New frame in data
@@ -575,6 +574,29 @@ namespace WowFishingAssist
                 pbViewPane.Image = (Bitmap)cropped;
             };
             screenStateLogger.Start();
+        }
+
+        private void stopScreenGrab()
+        {
+            screenStateLogger.Stop();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Text = Text + " " + version.Major + "." + version.Minor + " (build " + version.Build + ")"; //change form title
+
+            //todo: make this user selectable.
+            SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS); // Set form as top form.  Always on top.  
+            AForge.Vision.Motion.MotionDetector motionDetector = null;
+            motionDetector = GetDefaultMotionDetector();
+            globalTimer.Elapsed += GlobalTimer_Elapsed;
+            lureTimer.Elapsed += LureTimer_Elapsed;
+            baitTimer.Elapsed += BaitTimer_Elapsed;
+            screenUpdateTimer.Tick += ScreenUpdateTimer_Tick;
+            startScreenGrab();
+
+
         }
 
         private void BaitTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -638,9 +660,6 @@ namespace WowFishingAssist
             useBait = cbUseBait.Checked;
         }
 
-        private void numDifferenceThreshold_ValueChanged(object sender, EventArgs e)
-        {
 
-        }
     }
 }

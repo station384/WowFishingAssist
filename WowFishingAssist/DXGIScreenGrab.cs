@@ -29,6 +29,14 @@ namespace WowFishingAssist
 
         }
 
+        public int CaptureRateMS { 
+            get => captureRateMS; 
+            set => captureRateMS = value; 
+        }
+
+        private Thread captureThread  = null;
+
+
         public void Start()
         {
             _run = true;
@@ -67,7 +75,6 @@ namespace WowFishingAssist
             async () =>
             {
                 // Duplicate the output
-
                 using (var duplicatedOutput = output1.DuplicateOutput(device))
                 {
                     while (_run)
@@ -119,7 +126,7 @@ namespace WowFishingAssist
                             }
                             screenResource.Dispose();
                             duplicatedOutput.ReleaseFrame();
-                            
+
                             await Task.Delay(captureRateMs);
                         }
                         catch (SharpDXException e)
@@ -133,11 +140,10 @@ namespace WowFishingAssist
                     }
                 }
             };
-            Thread thread = new Thread(screenGrabCycle) { IsBackground = true };
-            thread.Start();
 
-         //   Task.Factory.StartNew();
-           // while (!_init) ;
+            captureThread = new Thread(screenGrabCycle) { IsBackground = true };
+            captureThread.Start();
+
         }
 
         public void Stop()
@@ -146,5 +152,6 @@ namespace WowFishingAssist
         }
 
         public EventHandler<byte[]> ScreenRefreshed;
+        private int captureRateMS;
     }
 }
