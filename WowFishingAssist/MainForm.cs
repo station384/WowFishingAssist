@@ -637,5 +637,10 @@ namespace WowFishingAssist
             gbBaitType.Enabled = cbUseBait.Checked;
             useBait = cbUseBait.Checked;
         }
+
+        private void numDifferenceThreshold_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
