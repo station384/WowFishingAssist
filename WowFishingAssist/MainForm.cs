@@ -1,4 +1,5 @@
-﻿using AForge.Imaging;
+﻿using AForge;
+using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Vision.Motion;
 using System;
@@ -55,6 +56,7 @@ namespace WowFishingAssist
         [DllImport("User32.dll")]
         private static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
 
+
         private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
         private const UInt32 SWP_NOSIZE = 0x0001;
         private const UInt32 SWP_NOMOVE = 0x0002;
@@ -66,6 +68,31 @@ namespace WowFishingAssist
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public static implicit operator System.Drawing.Point(POINT point)
+            {
+                return new System.Drawing.Point(point.X, point.Y);
+            }
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool GetCursorPos(out POINT lpPoint);
+
+        public static System.Drawing.Point GetCursorPosition()
+        {
+            POINT lpPoint;
+            GetCursorPos(out lpPoint);
+            // NOTE: If you need error handling
+            // bool success = GetCursorPos(out lpPoint);
+            // if (!success)
+
+            return lpPoint;
+        }
 
 
         ScreenStateLogger screenStateLogger = new ScreenStateLogger();
@@ -178,7 +205,7 @@ namespace WowFishingAssist
         private async Task sendFishingCastCommand()
         {
             SetForegroundWindow(hWnd);    // bring Wow into the forground.
-            Point pt = new Point(10, 10);
+            System.Drawing.Point pt = new System.Drawing.Point(10, 10);
             Cursor.Position = pt;
             // sendAKey(0xBB);
             sendAKey(0xBF);  // - / 
@@ -342,7 +369,7 @@ namespace WowFishingAssist
             sendAKey(0x0D);   // Enter
             await Task.Delay(5000);
 
-            Point pt = new Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+            System.Drawing.Point pt = new System.Drawing.Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
             Cursor.Position = pt;
             DoMouseClick(pt);
 
@@ -363,7 +390,7 @@ namespace WowFishingAssist
         }
 
 
-        public async void DoMouseClick(Point p)
+        public async void DoMouseClick(System.Drawing.Point p)
         {
 
             //Call the imported function with the cursor's current position
@@ -381,7 +408,7 @@ namespace WowFishingAssist
 
         private async void ClickBobber(Rectangle x1)
         {
-            Point pt;
+            System.Drawing.Point pt;
             PauseFishing();
             //Get the biggest bounding box.
 
@@ -389,7 +416,13 @@ namespace WowFishingAssist
             // set it to move the mouse to the center of bounding box. 
             int clickxPos = ((int)(origScreenWidth * 0.40) + x1.Right) - (x1.Width / 2);
             int clickyPos = ((int)(origScreenHeight * 0.50) + x1.Bottom) - (x1.Height / 2);
-            pt = new Point(clickxPos, clickyPos);
+            if (cbPointFishing.Checked)
+            {
+                var l1 = GetCursorPosition();
+                clickxPos = l1.X;
+                clickyPos = l1.Y;
+            }
+            pt = new System.Drawing.Point(clickxPos, clickyPos);
             Cursor.Position = pt;
             await Task.Delay(rnd.Next((int)numMinBobClickTime.Value * 1000, (int)numMaxBobClickTime.Value * 1000));
             DoMouseClick(pt);  // Inject windows events for mousedown and mouseup to simulate a click on the screen where motion was detected.
@@ -397,8 +430,12 @@ namespace WowFishingAssist
             await Task.Delay(2000);  // Wait for the dialogs on the screen to go away and settle down.
 
             //Move the cursor to the upper left corner for resting.  this avoids it accedently highliting the bobber can causing a false positive.
-            pt = new Point(10, 10);
-            Cursor.Position = pt;
+            if (!cbPointFishing.Checked)
+            {
+                pt = new System.Drawing.Point(10, 10);
+                Cursor.Position = pt;
+            }
+           
 
 
 
@@ -421,8 +458,14 @@ namespace WowFishingAssist
                 baitTimer.Start();
                 //return;
             }
-
-            await sendFishingCastCommand();
+            if (!cbPointFishing.Checked)
+            {
+                await sendFishingCastCommand();
+            }
+            else
+            {
+                DoMouseClick(pt); 
+            }
             ResumeFishing();
         }
 

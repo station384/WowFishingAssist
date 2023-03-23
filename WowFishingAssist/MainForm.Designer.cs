@@ -66,6 +66,7 @@
             this.cbUseBait = new System.Windows.Forms.CheckBox();
             this.frameCaptureRateMS = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
+            this.cbPointFishing = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbViewPane)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDifferenceThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPerBackgroundUpdate)).BeginInit();
@@ -493,11 +494,11 @@
             // 
             this.gbBaitType.Controls.Add(this.rbBait1ET);
             this.gbBaitType.Enabled = false;
-            this.gbBaitType.Location = new System.Drawing.Point(375, 502);
+            this.gbBaitType.Location = new System.Drawing.Point(375, 555);
             this.gbBaitType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbBaitType.Name = "gbBaitType";
             this.gbBaitType.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbBaitType.Size = new System.Drawing.Size(201, 154);
+            this.gbBaitType.Size = new System.Drawing.Size(201, 101);
             this.gbBaitType.TabIndex = 32;
             this.gbBaitType.TabStop = false;
             this.gbBaitType.Text = "Bait Type";
@@ -553,11 +554,24 @@
             this.label12.Text = "Frame Capture Rate";
             this.label12.Visible = false;
             // 
+            // cbPointFishing
+            // 
+            this.cbPointFishing.AutoSize = true;
+            this.cbPointFishing.Location = new System.Drawing.Point(408, 491);
+            this.cbPointFishing.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbPointFishing.Name = "cbPointFishing";
+            this.cbPointFishing.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbPointFishing.Size = new System.Drawing.Size(126, 24);
+            this.cbPointFishing.TabIndex = 36;
+            this.cbPointFishing.Text = "Point Fishing";
+            this.cbPointFishing.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(777, 785);
+            this.Controls.Add(this.cbPointFishing);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.frameCaptureRateMS);
             this.Controls.Add(this.cbUseBait);
@@ -655,6 +669,7 @@
         private System.Windows.Forms.CheckBox cbUseBait;
         private System.Windows.Forms.NumericUpDown frameCaptureRateMS;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox cbPointFishing;
     }
 }
 
