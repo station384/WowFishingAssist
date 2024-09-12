@@ -152,10 +152,10 @@ namespace WowFishingAssist
             // This is currently the best one.
             detector = new AForge.Vision.Motion.SimpleBackgroundModelingDetector()
             {
-                DifferenceThreshold = 50,
-                FramesPerBackgroundUpdate = 5,
+                DifferenceThreshold = 35,
+                FramesPerBackgroundUpdate = 4,
                 KeepObjectsEdges = true,
-                MillisecondsPerBackgroundUpdate = 5,
+                MillisecondsPerBackgroundUpdate = 20,
                 SuppressNoise = true
             };
 
@@ -368,8 +368,14 @@ namespace WowFishingAssist
             sendAChar(0x48);  // -h
             sendAKey(0x0D);   // Enter
             await Task.Delay(5000);
+            var curScreenSize = Screen.PrimaryScreen.Bounds;
+            var xPercent = 1020.0 / 1920.0;
+            var yPercent = 578.0 / 1080.0;
+            var xpos = (int)Math.Ceiling(curScreenSize.Width * xPercent);
+            var ypos = (int)Math.Ceiling(curScreenSize.Height * yPercent);
 
-            System.Drawing.Point pt = new System.Drawing.Point(998, 650);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
+
+            System.Drawing.Point pt = new System.Drawing.Point(xpos, ypos);  // todo: this position needs to be relative.  its the position on a 1080 screen.   needs to be relative to what ever the rez is set to.
             Cursor.Position = pt;
             DoMouseClick(pt);
 
@@ -430,7 +436,7 @@ namespace WowFishingAssist
             await Task.Delay(2000);  // Wait for the dialogs on the screen to go away and settle down.
 
             //Move the cursor to the upper left corner for resting.  this avoids it accedently highliting the bobber can causing a false positive.
-            if (!cbPointFishing.Checked)
+            if (cbPointFishing.CheckState == CheckState.Unchecked)
             {
                 pt = new System.Drawing.Point(10, 10);
                 Cursor.Position = pt;
